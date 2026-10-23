@@ -167,15 +167,29 @@ function createMockSupabaseClient() {
         };
       },
       async signInWithPassword({ email }: { email: string; password?: string }) {
+        const inferredRole = email.toLowerCase().includes('admin')
+          ? 'super_admin'
+          : email.toLowerCase().includes('teacher')
+          ? 'teacher'
+          : 'student';
         const user: User = {
           id: 'user-' + btoa(email).slice(0, 8),
           app_metadata: {},
-          user_metadata: { full_name: email.split('@')[0] },
+          user_metadata: { full_name: email.split('@')[0], role: inferredRole },
           aud: 'authenticated',
           created_at: new Date().toISOString(),
           email,
         };
         setStoredMockUser(user);
+        saveStoredProfile({
+          id: user.id,
+          email,
+          full_name: email.split('@')[0],
+          role: inferredRole,
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
         const session: Session = {
           access_token: 'mock-token',
           refresh_token: 'mock-refresh',
@@ -195,7 +209,7 @@ function createMockSupabaseClient() {
         options?: { data?: { full_name?: string; role?: string } };
       }) {
         const fullName = options?.data?.full_name || email.split('@')[0];
-        const role = options?.data?.role || 'student';
+        const role = options?.data?.role || (email.toLowerCase().includes('admin') ? 'super_admin' : 'student');
         const user: User = {
           id: 'user-' + btoa(email).slice(0, 8),
           app_metadata: {},
@@ -264,11 +278,24 @@ function createMockSupabaseClient() {
             if (profile) return { data: profile, error: null };
             const user = getStoredMockUser();
             if (user && (!currentFilterVal || currentFilterVal === user.id)) {
+              const inferredRole =
+                user.user_metadata?.role ||
+                (user.email?.toLowerCase().includes('admin')
+                  ? 'super_admin'
+                  : user.email?.toLowerCase().includes('teacher')
+                  ? 'teacher'
+                  : 'student');
               const defaultProfile = {
                 id: user.id,
                 email: user.email,
-                full_name: user.user_metadata?.full_name || 'Student Aspirant',
-                role: 'student',
+                full_name:
+                  user.user_metadata?.full_name ||
+                  (inferredRole === 'super_admin'
+                    ? 'Platform Administrator'
+                    : inferredRole === 'teacher'
+                    ? 'Educator'
+                    : 'Student Aspirant'),
+                role: inferredRole,
                 is_active: true,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),

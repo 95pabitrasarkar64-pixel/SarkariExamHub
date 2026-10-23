@@ -9,8 +9,9 @@ export const navLinks = [
 ];
 
 export const resourceLinks = [
-  { href: '/teacher/question-studio', label: 'Multilingual Question Studio' },
+  { href: '/admin', label: 'Admin Portal' },
   { href: '/admin/articles', label: 'Article Publishing Studio' },
+  { href: '/teacher/question-studio', label: 'Multilingual Question Studio' },
   { href: '/ai-importer', label: 'AI Question Importer' },
   { href: '/for-teachers', label: 'For Teachers' },
   { href: '/for-institutes', label: 'For Coaching Institutes' },
@@ -71,12 +72,12 @@ export const examCategoryInfo: Record<string, { name: string; description: strin
   railway: {
     name: 'Railway',
     description: 'Railway recruitment examinations (RRB, RRC)',
-    image: '/assets/aistudio/rail_dafe15af.webp',
+    image: '/assets/aistudio/rail-removebg-preview_562dda19.png',
   },
   banking: {
     name: 'Banking',
     description: 'Banking examinations (IBPS, SBI, RBI)',
-    image: '/assets/aistudio/bank_39a0cf78.jpg',
+    image: '/assets/aistudio/bank-removebg-preview_aec372c3.png',
   },
   'police-constable': {
     name: 'Police & Constable',

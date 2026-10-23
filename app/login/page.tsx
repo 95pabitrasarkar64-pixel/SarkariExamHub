@@ -95,6 +95,65 @@ export default function LoginPage() {
             </Button>
           </form>
 
+          <div className="mt-6 border-t border-border pt-4">
+            <p className="mb-2.5 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Demo 1-Click Access
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-xs border-primary/40 font-semibold text-primary hover:bg-primary hover:text-white"
+                onClick={async () => {
+                  setEmail('admin@sarkariexamhub.com');
+                  setPassword('admin123');
+                  setLoading(true);
+                  await signIn('admin@sarkariexamhub.com', 'admin123');
+                  setLoading(false);
+                  toast.success('Signed in as Platform Administrator');
+                  router.push('/admin');
+                }}
+              >
+                Admin
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-xs border-accent/40 font-semibold text-accent hover:bg-accent hover:text-accent-foreground"
+                onClick={async () => {
+                  setEmail('teacher@sarkariexamhub.com');
+                  setPassword('teacher123');
+                  setLoading(true);
+                  await signIn('teacher@sarkariexamhub.com', 'teacher123');
+                  setLoading(false);
+                  toast.success('Signed in as Educator');
+                  router.push('/teacher');
+                }}
+              >
+                Teacher
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-xs font-medium hover:bg-secondary"
+                onClick={async () => {
+                  setEmail('student@sarkariexamhub.com');
+                  setPassword('student123');
+                  setLoading(true);
+                  await signIn('student@sarkariexamhub.com', 'student123');
+                  setLoading(false);
+                  toast.success('Signed in as Student Aspirant');
+                  router.push('/student');
+                }}
+              >
+                Student
+              </Button>
+            </div>
+          </div>
+
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="font-medium text-primary hover:underline">
