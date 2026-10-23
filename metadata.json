@@ -1,0 +1,5 @@
+{
+  "name": "SarkariExamHub",
+  "description": "Educational platform for government exam preparation in India with AI-assisted question banks, study materials, and mock tests.",
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
