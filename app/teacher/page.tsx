@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   Settings,
   PlusCircle,
+  Languages,
 } from 'lucide-react';
 
 export default function TeacherDashboardPage() {
@@ -27,6 +28,11 @@ export default function TeacherDashboardPage() {
         description="Manage your question banks, AI imports, mock test series, and student enrollments."
       >
         <div className="mt-6 flex flex-wrap gap-3">
+          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Link href="/teacher/question-studio">
+              <Languages className="mr-2 h-4 w-4 text-accent" /> Multilingual Question Studio
+            </Link>
+          </Button>
           <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
             <Link href="/ai-importer">
               <Brain className="mr-2 h-4 w-4" /> AI Question Importer

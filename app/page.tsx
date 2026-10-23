@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   GraduationCap,
   Brain,
@@ -16,10 +17,15 @@ import {
   Search,
   Building2,
   Award,
+  Languages,
+  Newspaper,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { examCategoryInfo, examCategorySlugs } from '@/lib/navigation';
+import { INITIAL_ARTICLES } from '@/lib/article-data';
 
 export default function HomePage() {
   const examCategories = examCategorySlugs.map((slug) => ({
@@ -93,8 +99,21 @@ export default function HomePage() {
                 >
                   <CardHeader>
                     <div className="flex items-start gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                        <BookOpen className="h-5 w-5" />
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                        {cat.image ? (
+                          <div className="relative h-8 w-8 overflow-hidden rounded bg-white p-0.5 shadow-xs">
+                            <Image
+                              src={cat.image}
+                              alt={cat.name}
+                              width={32}
+                              height={32}
+                              className="h-full w-full object-contain"
+                              referrerPolicy="no-referrer"
+                            />
+                          </div>
+                        ) : (
+                          <BookOpen className="h-5 w-5" />
+                        )}
                       </div>
                       <div>
                         <CardTitle className="text-base font-semibold text-primary">
@@ -132,18 +151,24 @@ export default function HomePage() {
               A complete toolkit for students, teachers, and coaching institutes
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <FeatureCard
+              icon={Languages}
+              title="Multilingual Question Studio"
+              description="Create, translate, and verify MCQs in 15 Indian languages (Bengali, Hindi, Urdu, Tamil, Odia) with option-mapping integrity."
+              href="/teacher/question-studio"
+            />
+            <FeatureCard
+              icon={Newspaper}
+              title="Daily Exam Articles & Syllabus"
+              description="Official syllabus breakdowns, marks distributions, and 90-day strategy handbooks verified against government gazettes."
+              href="/articles"
+            />
             <FeatureCard
               icon={Brain}
               title="AI Question Importer"
-              description="Upload PDFs and automatically extract MCQs with options, correct answers, and explanations using AI."
+              description="Upload PDFs and automatically extract MCQs with options, correct answers, and explanations using Gemini AI."
               href="/ai-importer"
-            />
-            <FeatureCard
-              icon={FileText}
-              title="PDF Library"
-              description="Access organized study materials and PDFs with a secure, watermarked document viewer."
-              href="/pdf-library"
             />
             <FeatureCard
               icon={Timer}
@@ -151,24 +176,71 @@ export default function HomePage() {
               description="Take timed examinations with instant scoring, detailed explanations, and performance analytics."
               href="/mock-tests"
             />
-            <FeatureCard
-              icon={TrendingUp}
-              title="Test Series"
-              description="Enroll in structured test series covering chapter-wise practice and full-length mock exams."
-              href="/test-series"
-            />
-            <FeatureCard
-              icon={Search}
-              title="Search & Filter"
-              description="Find resources by exam, subject, topic, language, and content type with powerful filtering."
-              href="/exams"
-            />
-            <FeatureCard
-              icon={Shield}
-              title="Secure & Private"
-              description="Row-level security, server-side access control, and protected content delivery."
-              href="/about"
-            />
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Articles & Syllabus Section */}
+      <section className="bg-white py-16 md:py-20 border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-accent mb-2">
+                <ShieldCheck className="h-4 w-4" />
+                Verified Examination Blueprints
+              </div>
+              <h2 className="text-2xl font-bold text-primary md:text-3xl">
+                Daily Exam Guides & Syllabus Breakdowns
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Authentic marks weightage, negative marking rules, and official portal citations
+              </p>
+            </div>
+            <Button asChild variant="outline" className="mt-4 md:mt-0">
+              <Link href="/articles">
+                Browse All Articles <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {INITIAL_ARTICLES.slice(0, 3).map((art) => (
+              <Card
+                key={art.id}
+                className="flex flex-col justify-between border-border transition-all hover:border-primary/40 hover:shadow-md"
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <Badge variant="secondary" className="text-[11px] font-semibold">
+                      {art.category_name}
+                    </Badge>
+                    <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600">
+                      <ShieldCheck className="h-3 w-3" /> Verified
+                    </span>
+                  </div>
+                  <Link href={`/articles/${art.slug}`}>
+                    <CardTitle className="text-base font-bold text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug">
+                      {art.title}
+                    </CardTitle>
+                  </Link>
+                  <CardDescription className="text-xs text-muted-foreground line-clamp-2 mt-2 leading-relaxed">
+                    {art.excerpt}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="pt-0">
+                  <div className="flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
+                    <span>{art.read_time_minutes} min read</span>
+                    <Link
+                      href={`/articles/${art.slug}`}
+                      className="font-semibold text-primary hover:text-accent flex items-center gap-1"
+                    >
+                      Read Guide <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>

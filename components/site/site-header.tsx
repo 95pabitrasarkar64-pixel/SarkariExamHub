@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X, GraduationCap, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -26,16 +27,27 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2" onClick={() => setMobileOpen(false)}>
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <GraduationCap className="h-5 w-5 text-white" />
+        <Link href="/" className="flex items-center gap-2.5" onClick={() => setMobileOpen(false)}>
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg">
+            <Image
+              src="/assets/aistudio/SARKARIEXAMHUB_Academic_Logo_244f6d21.png"
+              alt="SarkariExamHub Logo"
+              width={40}
+              height={40}
+              className="h-full w-full object-contain"
+              priority
+            />
           </div>
-          <div className="flex flex-col leading-none">
-            <span className="text-lg font-bold tracking-tight text-primary">
-              SarkariExamHub
+          <div className="flex flex-col leading-tight">
+            <span className="text-lg sm:text-xl font-black tracking-tight uppercase">
+              <span className="text-primary">SARKARI</span>
+              <span className="text-accent">EXAM</span>
+              <span className="text-primary">HUB</span>
             </span>
-            <span className="hidden text-[10px] text-muted-foreground sm:block">
+            <span className="hidden items-center gap-1.5 text-[9.5px] font-semibold tracking-tight text-foreground/85 sm:flex">
+              <span className="h-[1.5px] w-2.5 rounded-full bg-accent" />
               All Government Exams. One Destination.
+              <span className="h-[1.5px] w-2.5 rounded-full bg-accent" />
             </span>
           </div>
         </Link>

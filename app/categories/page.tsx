@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { BookOpen, ArrowRight } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageHeader, PageContainer } from '@/components/site/page-components';
@@ -24,8 +25,21 @@ export default function CategoriesPage() {
             <Card key={cat.slug} className="group transition-all hover:border-primary/30 hover:shadow-lg">
               <CardHeader>
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                    <BookOpen className="h-6 w-6" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                    {cat.image ? (
+                      <div className="relative h-10 w-10 overflow-hidden rounded bg-white p-0.5 shadow-xs">
+                        <Image
+                          src={cat.image}
+                          alt={cat.name}
+                          width={40}
+                          height={40}
+                          className="h-full w-full object-contain"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                    ) : (
+                      <BookOpen className="h-6 w-6" />
+                    )}
                   </div>
                   <div className="flex-1">
                     <CardTitle className="text-lg text-primary">{cat.name}</CardTitle>

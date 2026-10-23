@@ -1,6 +1,7 @@
 export const navLinks = [
   { href: '/exams', label: 'All Exams' },
   { href: '/categories', label: 'Categories' },
+  { href: '/articles', label: 'Daily Articles' },
   { href: '/materials', label: 'Study Materials' },
   { href: '/pdf-library', label: 'PDF Library' },
   { href: '/mock-tests', label: 'Mock Tests' },
@@ -8,6 +9,8 @@ export const navLinks = [
 ];
 
 export const resourceLinks = [
+  { href: '/teacher/question-studio', label: 'Multilingual Question Studio' },
+  { href: '/admin/articles', label: 'Article Publishing Studio' },
   { href: '/ai-importer', label: 'AI Question Importer' },
   { href: '/for-teachers', label: 'For Teachers' },
   { href: '/for-institutes', label: 'For Coaching Institutes' },
@@ -39,41 +42,50 @@ export const examCategorySlugs = [
   'group-c-d',
 ];
 
-export const examCategoryInfo: Record<string, { name: string; description: string }> = {
+export const examCategoryInfo: Record<string, { name: string; description: string; image?: string }> = {
   'icds-anganwadi': {
     name: 'ICDS & Anganwadi',
     description: 'ICDS and Anganwadi recruitment examinations',
+    image: '/assets/aistudio/icds_a53ae331.jpg',
   },
   panchayat: {
     name: 'Panchayat',
     description: 'Panchayat and rural development recruitment examinations',
+    image: '/assets/aistudio/panchayet_ea84dc7f.jpg',
   },
   clerkship: {
     name: 'Clerkship',
     description: 'Clerk-grade and clerical recruitment examinations',
+    image: '/assets/aistudio/psc-removebg-preview_3e2c49ba.png',
   },
   'state-psc': {
     name: 'State PSC',
     description: 'State Public Service Commission examinations including WBCS',
+    image: '/assets/aistudio/psc-removebg-preview_3e2c49ba.png',
   },
   ssc: {
     name: 'SSC',
     description: 'SSC CGL, CHSL, MTS, GD and other SSC examinations',
+    image: '/assets/aistudio/ssc_75038755.jpg',
   },
   railway: {
     name: 'Railway',
     description: 'Railway recruitment examinations (RRB, RRC)',
+    image: '/assets/aistudio/rail_dafe15af.webp',
   },
   banking: {
     name: 'Banking',
     description: 'Banking examinations (IBPS, SBI, RBI)',
+    image: '/assets/aistudio/bank_39a0cf78.jpg',
   },
   'police-constable': {
     name: 'Police & Constable',
     description: 'Police and constable recruitment examinations',
+    image: '/assets/aistudio/police_f2b8d5a1.webp',
   },
   'group-c-d': {
     name: 'Group C & D',
     description: 'Group C and Group D government recruitment examinations',
+    image: '/assets/aistudio/cd_4f832ae4.jpg',
   },
 };

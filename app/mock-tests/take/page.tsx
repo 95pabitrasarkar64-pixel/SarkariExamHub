@@ -29,6 +29,9 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { MOCK_TESTS, MockTest, MockQuestion } from '@/lib/mock-test-data';
+import { SUPPORTED_LANGUAGES, LanguageCode, getLanguage, isRTL } from '@/lib/languages';
+import { INITIAL_MULTILINGUAL_QUESTIONS } from '@/lib/question-bank-data';
+import { Languages } from 'lucide-react';
 
 function ExamEngine() {
   const searchParams = useSearchParams();
@@ -39,6 +42,7 @@ function ExamEngine() {
     return MOCK_TESTS.find((t) => t.id === testId) || MOCK_TESTS[0];
   }, [testId]);
 
+  const [examLanguage, setExamLanguage] = useState<LanguageCode>('en');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [markedForReview, setMarkedForReview] = useState<Record<number, boolean>>({});
@@ -200,6 +204,36 @@ function ExamEngine() {
   };
 
   const currentQuestion = test.questions[currentIndex];
+
+  const displayQuestion = useMemo(() => {
+    if (examLanguage === 'en') {
+      return {
+        question: currentQuestion.question,
+        options: currentQuestion.options,
+        explanation: currentQuestion.explanation,
+      };
+    }
+
+    const match = INITIAL_MULTILINGUAL_QUESTIONS.find((mq) => {
+      const enQ = mq.translations.en?.question.toLowerCase() || '';
+      return enQ.includes(currentQuestion.question.slice(0, 20).toLowerCase());
+    });
+
+    if (match && match.translations[examLanguage]) {
+      const t = match.translations[examLanguage]!;
+      return {
+        question: t.question,
+        options: t.options,
+        explanation: t.explanation,
+      };
+    }
+
+    return {
+      question: currentQuestion.question,
+      options: currentQuestion.options,
+      explanation: currentQuestion.explanation,
+    };
+  }, [currentQuestion, examLanguage]);
 
   // If submitted, show the comprehensive Scorecard & Detailed Solutions view
   if (isSubmitted) {
@@ -411,7 +445,24 @@ function ExamEngine() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Multilingual Switcher during test */}
+            <div className="flex items-center gap-1.5 rounded-lg border border-border bg-secondary/50 px-2 py-1 text-xs">
+              <Languages className="h-3.5 w-3.5 text-accent shrink-0" />
+              <select
+                value={examLanguage}
+                onChange={(e) => setExamLanguage(e.target.value as LanguageCode)}
+                className="bg-transparent text-xs font-semibold text-foreground focus:outline-none cursor-pointer"
+                aria-label="Exam Language"
+              >
+                {SUPPORTED_LANGUAGES.map((l) => (
+                  <option key={l.code} value={l.code}>
+                    {l.nativeName} ({l.name})
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Timer countdown */}
             <div
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-mono font-bold ${
@@ -439,7 +490,7 @@ function ExamEngine() {
       <div className="container mx-auto flex-1 p-4 grid gap-6 lg:grid-cols-4">
         {/* Question Panel (3 cols) */}
         <div className="lg:col-span-3 flex flex-col justify-between space-y-4">
-          <Card className="flex-1 flex flex-col justify-between">
+          <Card className="flex-1 flex flex-col justify-between" dir={isRTL(examLanguage) ? 'rtl' : 'ltr'}>
             <CardHeader className="border-b border-border pb-4">
               <div className="flex items-center justify-between">
                 <Badge variant="outline" className="text-xs">
@@ -455,12 +506,12 @@ function ExamEngine() {
                 Subject: {currentQuestion.subject}
               </p>
               <CardTitle className="text-base sm:text-lg font-medium text-primary mt-2 leading-relaxed">
-                {currentQuestion.question}
+                {displayQuestion.question}
               </CardTitle>
             </CardHeader>
 
             <CardContent className="pt-6 space-y-3 flex-1">
-              {currentQuestion.options.map((optionText, optIdx) => {
+              {displayQuestion.options.map((optionText, optIdx) => {
                 const isSelected = answers[currentIndex] === optIdx;
                 return (
                   <button
